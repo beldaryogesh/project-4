@@ -7,22 +7,27 @@ const validUrl = require('valid-url');
 const shorten = async function (req, res) {
     try{
         let host = "http:localhost:3000";
-    const longUrl = req.body;
-    const baseUrl= host;
-
+    const data = req.body;
+    let longUrl=data.longUrl;
     //checking base url
-    if(validUrl.isUri(longUrl)) {
+    
+    if(!validUrl.isUri(longUrl)) {
         return res
         .status(401)
         .send({ status: false, msg: "Invalid url" });
     }
     else {
         const urlCode= shortid.generate();
-         const shortUrl= baseUrl + '/' + urlCode;
-            let data={urlCode: urlCode,
+         const shortUrl= host + '/' + urlCode;
+         data.urlCode=urlCode;
+        data.shortUrl=shortUrl;
+        
+         
+            let datafull={urlCode: urlCode,
                 shortUrl: shortUrl,
                 longUrl: longUrl};
-            const createdURL = await urlModel.create(data);
+                
+            const createdURL = await urlModel.create(datafull);
             return res
             .status(200)
         .send({ status: true, data: data });

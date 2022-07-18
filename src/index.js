@@ -9,7 +9,7 @@ const router = require('./router/routes')
 
  
  const mongoose=require('mongoose')
- mongoose.connect("mongodb+srv://Prashant10:Cv4uY0uU1ijKMVpu@cluster0.j9jd1jo.mongodb.net/GroupDatabase60",
+ mongoose.connect("mongodb+srv://atifpervez:34BmDa5XVvtznQvO@code.8mvlc.mongodb.net/group60Database",
     {useNewUrlParser:true})
     .then(()=>console.log("mongoDB is Connected!!"))
     .catch(err=>console.log(err))
