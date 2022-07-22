@@ -43,9 +43,7 @@ const shorten = async function (req, res) {
             .send({ status: false, message: "Url is not valid!!" })}
 
         let isValidUrl= await urlModel.findOne({longUrl}).select({_id:0, urlCode:1,longUrl:1,shortUrl:1})
-        if(isValidUrl ){
-          return  res.status(200).send({status: false, message: "longUrl is alredy present" , data:isValidUrl})
-        }
+        
         //checking base url
 
         if (!validUrl.isUri(longUrl)) {
@@ -68,7 +66,7 @@ const shorten = async function (req, res) {
 
             const createdURL = await urlModel.create(datafull);
             return res
-                .status(200)
+                .status(201)
                 .send({ status: true, data: data });
 
         }
@@ -97,9 +95,9 @@ const getUrl = async function (req, res) {
             return res.status(404).send({ status: false, message: "No URL found" })
         }
         else {
-            let seturl=url.longUrl
-            await SET_ASYNC(`${seturl}`, JSON.stringify(url))
-            return res.status(302).redirect(seturl)
+            let seturl=url.urlCode
+            await SET_ASYNC(`${seturl}`, JSON.stringify(url.longUrl))
+            return res.status(302).redirect(url.longUrl)
         }
     }
 }
