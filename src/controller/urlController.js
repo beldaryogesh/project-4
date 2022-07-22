@@ -28,7 +28,7 @@ const GET_ASYNC = promisify(redisClient.GET).bind(redisClient);
 
 const shorten = async function (req, res) {
     try {
-        let host = "http:localhost:3000";
+        let host = "http://localhost:3000";
         const data = req.body;
         let longUrl = data.longUrl;
         if (Object.keys(data).length == 0) {
@@ -42,9 +42,9 @@ const shorten = async function (req, res) {
             .status(400)
             .send({ status: false, message: "Url is not valid!!" })}
 
-        let isValidUrl= await urlModel.findOne({longUrl})
+        let isValidUrl= await urlModel.findOne({longUrl}).select({_id:0, urlCode:1,longUrl:1,shortUrl:1})
         if(isValidUrl ){
-          return  res.status(400).send({status: false, message: "longUrl is alredy present"})
+          return  res.status(200).send({status: false, message: "longUrl is alredy present" , data:isValidUrl})
         }
         //checking base url
 
@@ -110,4 +110,3 @@ catch (error) {
 };
 
 module.exports={getUrl, shorten};
-
